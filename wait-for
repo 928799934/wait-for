@@ -31,7 +31,6 @@ wait_for() {
     for i in `seq $TIMEOUT` ; do
       nc -z "$HOST" "$PORT" > /dev/null 2>&1
       result=$?
-      echo $result
       if [ $result -ne 0 ] ; then
         sleep 1
 	continue
@@ -49,7 +48,7 @@ wait_for() {
   done
   if [ $num -eq 0 ] ; then
     if [ $# -gt 0 ] ; then
-      echo exec "$@"
+      exec "$@"
     fi
     exit 0
   fi
