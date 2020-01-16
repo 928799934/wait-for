@@ -9,7 +9,7 @@ When using this tool, you only need to pick the `wait-for` file as part of your 
 ## Usage
 
 ```
-./wait-for host:port [-t timeout] [-- command args]
+./wait-for host:port [host:port] [host:port] [-t timeout] [-- command args]
   -q | --quiet                        Do not output any status messages
   -t TIMEOUT | --timeout=timeout      Timeout in seconds, zero for no timeout
   -- COMMAND ARGS                     Execute command with args after the test finishes
@@ -20,7 +20,7 @@ When using this tool, you only need to pick the `wait-for` file as part of your 
 To check if [eficode.com](https://eficode.com) is available:
 
 ```
-$ ./wait-for www.eficode.com:80 -- echo "Eficode site is up"
+$ ./wait-for www.eficode.com:80 www.eficode.com:80 -- echo "Eficode site is up"
 
 Connection to www.eficode.com port 80 [tcp/http] succeeded!
 Eficode site is up
@@ -38,18 +38,11 @@ services:
 
   backend:
     build: backend
-    command: sh -c './wait-for db:5432 -- npm start'
+    command: sh -c './wait-for db:5432 db:5432 -- npm start'
     depends_on:
       - db
 ```
 
-## Testing
-
-Ironically testing is done using [bats](https://github.com/sstephenson/bats), which on the other hand is depending on [bash](https://en.wikipedia.org/wiki/Bash_(Unix_shell)).
-
-    docker build -t wait-for .
-    docker run -t wait-for
-    
 ## Note
 
 Make sure netcat is installed in your Dockerfile before running the command.
